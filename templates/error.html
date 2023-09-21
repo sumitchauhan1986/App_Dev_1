@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-danger" role="alert">
+  <h4>{{ messages[0] }}</h4>
+</div>
+{% endif %}
+{% endwith %}
+{% endblock %}

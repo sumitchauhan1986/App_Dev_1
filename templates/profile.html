@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">
+  Welcome, {{current_user.name}}!
+</h1>
+<div class="container-fluid">
+  <ul class="list-group list-group-horizontal">
+    <li class="list-group-item">Name: {{current_user.name}}</li>
+    <li class="list-group-item">Email: {{current_user.email}}</li>
+    <li class="list-group-item">Role: {{current_user.role}}</li>
+  </ul>
+  <h4>Shopping History</h4>
+  {% if current_user.role!="admin" %}
+  {% for product in current_user.purchased %}
+  <ul class="list-group list-group-horizontal-sm">
+    <li class="list-group-item">item name: {{product.name}}</li>
+    <li class="list-group-item">item manufacture: {{product.manufacture}}</li>
+    <li class="list-group-item">item Price per unit: {{product.rpu}}</li>
+    <li class="list-group-item">item expiry: {{product.expiry.strftime('%Y-%m-%d')}}</li>
+  </ul>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock %}

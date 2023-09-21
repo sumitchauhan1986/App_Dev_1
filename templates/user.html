@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="alert alert-success" role="alert">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+{% if products|length >0 %}
+<nav id="{{products[0].id}}" class="navbar bg-light px-3 mb-3">
+  <form action="{{url_for('main.checkout')}}" class="nav-link btn-outline-success" id="submit_form" method="post">
+    <div id="parent"></div>
+    <button type="button" class="btn btn-outline-primary">
+      <span class="material-symbols-outlined" onclick="sendSelection(event)" >
+        shopping_cart_checkout
+      </span>
+    </button>
+
+  </form>
+</nav>
+<div class="banner">
+<img class="w-100" src="{{url_for('static', filename='banner1.jpg')}}">
+</div>
+  <div class="row row-cols-1 row-cols-md-6 g-4 mb-4">
+    {% for product in products %}
+    <div class="col">
+      <div class="card">
+        <img src="{{url_for('static', filename=product.image)}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <div class="d-flex justify-content-between">
+            <button type="button" class="btn btn-sm rounded-pill" style="width: 2rem; height:2rem;">
+              <span onclick="{{"remove(event, " + product.id|string +")" }}" class="material-symbols-outlined">
+              remove
+              </span>
+            </button>
+            <button id="{{"product_" + product.id|string}}" type="button" class="btn btn-sm btn-primary" style="width: 3rem; height:2rem;">0</button>
+              <button type="button" class="btn btn-sm rounded-pill" style="width: 2rem; height:2rem;">
+              <span onclick="{{"add(event, " + product.id|string +")" }}" class="material-symbols-outlined">
+                add
+              </span>
+            </button>
+          </div>
+        </div>
+        {% if product.quantity >0 %}
+        <div class="card-footer bg-transparent border-success">{{product.name}} {{product.rpu}}/{{product.unit}}</div>
+        {% else %}
+        <div class="card-footer bg-danger">Out of Stock</div>
+        {% endif %}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+{% else %}
+<div class="banner">
+<img class='w-100' src="{{url_for('static', filename='banner1.jpg')}}">
+</div>
+<div class="alert alert-primary" role="alert">
+  No Product Available
+
+</div>
+{% endif %}
+<script>
+  const selectedproducts=new Array();
+
+  function add(event, pid){
+    newpid="product_"+pid
+    console.log(pid)
+    var count=document.getElementById(newpid);
+    console.log(count)
+    selectedproducts.push(pid);
+    console.log(selectedproducts)
+    var content=count.textContent.trim();
+    console.log(content);
+    var newvalue=parseInt(content);
+    console.log(newvalue)
+    newvalue=newvalue+1;
+    console.log(newvalue);
+    count.textContent=newvalue.toString();
+    event.preventDefault();
+  }
+  function remove(event, pid){
+    newpid="product_"+pid
+    console.log(pid)
+    var count=document.getElementById(newpid);
+    var content=count.textContent.trim();
+    var newvalue=parseInt(content);
+    console.log(newvalue)
+    if(newvalue>0){
+      newvalue=parseInt(newvalue, 10)-1;
+      count.textContent=newvalue.toString();
+      selectedproducts.pop(pid);
+    }
+    event.preventDefault();
+  }
+  function sendSelection(){
+    var inputElement = document.createElement("input");
+    inputElement.setAttribute("type", "hidden");
+    inputElement.value = selectedproducts.toString();
+    console.log(inputElement);
+    inputElement.name = "selectedproducts";
+    console.log(inputElement);
+    document.getElementById("parent").appendChild(inputElement);
+    document.getElementById("submit_form").submit();
+    }
+</script>
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="notification is-danger">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+{% if categories|length >0 %}
+<nav id="{{categories[0].id}}" class="navbar bg-light px-3 mb-3">
+  <a class="card-title" href="{{url_for('main.create')}}"> Category + </a>
+  <a class="card-title" href="{{url_for('main.product')}}"> Product + </a>
+</nav>
+<div data-bs-spy="scroll" data-bs-target="{{categories[0].id}}" data-bs-root-margin="0px 0px -40%" data-bs-smooth-scroll="true" class="scrollspy-example bg-light p-3 rounded-2" tabindex="0">
+  <div class="row row-cols-1 row-cols-md-6 g-4 mb-4" id={{"scrollspyHeading"}}>
+    {% if products|length>0 %}
+    {% for product in products %}
+    <div class="col">
+      <div class="card">
+        <div class="card-header d-flex">
+          <div class="col">
+            <p><a href="{{url_for('main.view', cat_id=product.category_id)}}" class="card-title">{{product.category.name}}</a></p>
+          </div>
+        </div>
+        <img src="{{url_for('static', filename=product.image)}}" class="card-img-top" alt="...">
+        <div class="card-body d-flex justify-content-between">
+          <div class="col">
+            <a href="{{url_for('main.product_delete', pro_id=product.id)}}" class="card-text">
+              <span class="material-symbols-outlined">delete</span>
+            </a>
+          </div>
+          <div class="col">
+            <a href="{{url_for('main.product_update', pro_id=product.id)}}" class="card-title">
+              <span class="material-symbols-outlined">upgrade</span>
+            </a>
+          </div>
+        </div>
+        <div class="card-footer bg-transparent border-success">{{product.name}}  {{product.rpu}}/{{product.unit}}</div>
+      </div>
+    </div>
+    {% endfor %}
+    {%else%}
+    {% for category in categories %}
+    <div class="col">
+      <div class="card">
+        <div class="card-header d-flex">
+          <div class="col">
+            <p><a href="{{url_for('main.view', cat_id=category.id)}}" class="card-title">{{category.name}}</a></p>
+          </div>
+        </div>
+        <img src="{{url_for('static', filename='Slice-5_4.avif')}}" class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-text">No item available</h5>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+    {% endif %}
+  </div>
+</div>
+{% else %}
+<div class="alert alert-primary" role="alert">
+  Nothing created
+</div>
+<a href="{{url_for('main.create')}}" class="card-title">
+  <span class="material-symbols-outlined">
+    add_circle
+  </span>
+</a>
+{% endif %}
+{% endblock %}

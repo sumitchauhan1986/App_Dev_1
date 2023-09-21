@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="notification is-danger">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+<div class="container text-center mt-5">
+  <div class="row justify-content-center position-absolute top-50 start-50 translate-middle">
+    <div class="card p-3 justify-content-center " style="width: 18rem;">
+      <div class="badge bg-primary">
+        <!-- Vertically centered modal -->
+        <div  class="row justify-content-center">
+          <h1>Groce-It</h1>
+        </div>
+      </div>
+      <p class="font-monospace">
+        Creating Product
+      </p>
+      <form action="{{url_for('main.product')}}" class="row g-3" method="post">
+        <div class="row-md-6">
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+            <select name="category" class="form-select" id="inputGroupSelect01">
+              <option selected>Select Category...</option>
+              {% for category in categories %}
+              <option value="{{category.id}}">{{category.name}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <br>
+          <div class="input-group">
+            <input type="text" name="name" class="form-control" placeholder="Product Name" required>
+          </div>
+          <br>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+            <select name="image" class="form-select" id="inputGroupSelect02">
+              <option selected>Select Image...</option>
+              {% for image in images %}
+              <option value="{{image}}">{{image}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <label for="formFile" class="form-label">Date of Manufacture</label>
+            <input type="date" name="manufacture" class="form-control" placeholder="manufacture" required>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <input type="number" name="rpu" class="form-control" placeholder="Product price" required>
+          </div>
+          <br>
+          <div class="input-group mb-3">
+            <label class="input-group-text" for="inputGroupSelect01">Options</label>
+            <select name="unit" class="form-select" id="inputGroupSelect03">
+              <option selected>Select Unit...</option>
+              {% for unit in units %}
+              <option value="{{unit}}">{{unit}}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <input type="number" name="quantity" class="form-control" placeholder="Enter Quantity" required>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <label for="formFile" class="form-label">Date of Expiry</label>
+            <input type="date" name="expiry" class="form-control" placeholder="expiry" required>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <button class="btn btn-secondary" type="submit">add product</button>
+          </div>
+        </div>
+      </form>
+          <div class="row-md-6">
+            <br>
+            <a href="{{url_for('main.admin')}}" class="row g-3" >
+              cancel
+            </a>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

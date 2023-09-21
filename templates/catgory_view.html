@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="notification is-danger">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+<div class="container text-center mt-5">
+  <div class="row justify-content-center position-absolute top-50 start-50 translate-middle">
+    <div class="card p-3 justify-content-center " style="width: 18rem;">
+      <p class="font-monospace">
+        Category
+      </p>
+      <form class="row g-3">
+        <div class="row-md-6">
+          <div class="input-group">
+            <input type="text" name="name" class="form-control" value="{{category.name}}" readonly>
+          </div>
+        </div>
+        <div class="row-12">
+            <a href="{{url_for('main.update', cat_id=category.id)}}" class="btn btn-outline-success" >Update</a>
+        </div>
+        <div class="row-12">
+            <a href="{{url_for('main.delete', cat_id=category.id)}}" class="btn btn-outline-success" >Delete</a>
+        </div>
+      </form>
+    </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

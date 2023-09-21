@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="notification is-danger">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+<div class="container text-center mt-5">
+  <div class="row justify-content-center position-absolute top-50 start-50 translate-middle">
+    <div class="card p-3 justify-content-center " style="width: 18rem;">
+      <div class="badge bg-primary">
+        <!-- Vertically centered modal -->
+        <div class="row justify-content-center">
+          <h1>Groce-It</h1>
+        </div>
+      </div>
+      <p class="font-monospace">
+        Deleting Product
+      </p>
+      <form action="{{url_for('main.product_delete', pro_id=product.id)}}" class="row g-3" method="post">
+        <div class="row-md-6">
+          <br>
+          <div class="input-group">
+            <input type="text" name="name" class="form-control" placeholder="{{product.name}}" readonly>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <input type="text" name="manufacture" class="form-control" placeholder="{{product.manufacture}}" readonly>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <input type="number" name="rpu" class="form-control" placeholder="{{product.rpu}}" readonly>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <input type="date" name="expiry" class="form-control" placeholder="{{product.expiry}}" readonly>
+          </div>
+          <br>
+          <div class="row-md-6">
+            <button class="btn btn-secondary" type="submit">Delete</button>
+          </div>
+      </form>
+          <div class="row-md-6">
+            <br>
+            <a href="{{url_for('main.admin')}}" class="row g-3" >
+              cancel
+            </a>
+          </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

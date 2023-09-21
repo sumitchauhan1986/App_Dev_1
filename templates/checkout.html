@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% with messages = get_flashed_messages() %}
+{% if messages %}
+<div class="notification is-danger">
+  {{ messages[0] }}
+</div>
+{% endif %}
+{% endwith %}
+<div class="container text-center mt-5">
+  <div class="row justify-content-center position-absolute top-50 start-50 translate-middle">
+    <div class="card p-0 justify-content-center " style="width: 18rem;">
+      <div class="badge bg-primary">
+        <!-- Vertically centered modal -->
+        <div class="row justify-content-center">
+          <h2>Groce-It</h2>
+        </div>
+      </div>
+      <p class="font-monospace">
+        Selected Items
+      </p>
+      <form action="{{url_for('main.pay')}}" class="row g-3" method="post">
+        <div class="row-md-6">
+          <table class="table">
+            <thead>
+              <tr>
+                <th scope="col">Product</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Price</th>
+                <th scope="col">Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in purchased %}
+              <tr>
+                <td>{{item[0].name}}<input type="hidden" name="pid" value="{{item[0].id}}" class="form-control"></td>
+                <td>{{item[1]}}<input type="hidden" name="qnt" value="{{item[1]}}" class="form-control"></td>
+                <td>{{item[2]}}<input type="hidden" name="pr" value="{{item[2]}}" class="form-control"></td>
+                <td>{{item[3]}}<input type="hidden" name="amt" value="{{item[3]}}" class="form-control"></td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+        <br>
+        <div class="row-md-6">
+          <input type="text" name="total" class="form-control" placeholder="Total Amount = {{total}}" readonly>
+        </div>
+        <br>
+        <div class="row-md-6">
+          <button class="btn btn-secondary" type="submit">Pay Now</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
